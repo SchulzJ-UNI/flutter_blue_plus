@@ -206,7 +206,6 @@ class DeviceScreen extends StatelessWidget {
 
                       //await c.write([0x12]);
                      var antwort = await c.read();
-                     print (utf8.decode(antwort));
                     },
                     onNotificationPressed: () async {
                       await c.setNotifyValue(!c.isNotifying);
@@ -218,7 +217,6 @@ class DeviceScreen extends StatelessWidget {
 
                       //await c.write([0x12]);
                       var antwort = await c.read();
-                      print (utf8.decode(antwort));
                     },
                     descriptorTiles: c.descriptors
                         .map(
@@ -313,7 +311,7 @@ class DeviceScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            ),/*
             StreamBuilder<int>(
               stream: device.mtu,
               initialData: 0,
@@ -325,7 +323,7 @@ class DeviceScreen extends StatelessWidget {
                   onPressed: () => device.requestMtu(223),
                 ),
               ),
-            ),
+            ),*/
             StreamBuilder<List<BluetoothService>>(
               stream: device.services,
               initialData: const [],

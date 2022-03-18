@@ -15,7 +15,7 @@ class ScanResultTile extends StatelessWidget {
   final VoidCallback? onTap;
 
   Widget _buildTitle(BuildContext context) {
-    if (result.device.name.isNotEmpty) {
+    if (result.device.name == "GroundPasser") {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +31,8 @@ class ScanResultTile extends StatelessWidget {
         ],
       );
     } else {
-      return Text(result.device.id.toString());
+      return Text(result.device.id.toString(),style: Theme.of(context).textTheme.caption,);
+      //return const Text("Kein GroundPasser");
     }
   }
 
@@ -94,13 +95,13 @@ class ScanResultTile extends StatelessWidget {
       title: _buildTitle(context),
       leading: Text(result.rssi.toString()),
       trailing: ElevatedButton(
-        child: const Text('CONNECT'),
+        child: const Text('Auswählen'),
         style: ElevatedButton.styleFrom(
           primary: Colors.black,
           onPrimary: Colors.white,
         ),
-        onPressed: (result.advertisementData.connectable) ? onTap : null,
-      ),
+        onPressed: (result.advertisementData.connectable && result.device.name == "GroundPasser") ? onTap : null,
+      ),/*
       children: <Widget>[
         _buildAdvRow(
             context, 'Complete Local Name', result.advertisementData.localName),
@@ -116,7 +117,7 @@ class ScanResultTile extends StatelessWidget {
                 : 'N/A'),
         _buildAdvRow(context, 'Service Data',
             getNiceServiceData(result.advertisementData.serviceData)),
-      ],
+      ],*/
     );
   }
 }
@@ -131,26 +132,29 @@ class ServiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (characteristicTiles.isNotEmpty) {
+    //Zeige nur Services an mit der UUID "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" --> UUID von der passenden Characterisitíc des RPI
+    if (characteristicTiles.isNotEmpty&& service.uuid.toString().toUpperCase() =="6E400001-B5A3-F393-E0A9-E50E24DCCA9E") {
+      //if (characteristicTiles.isNotEmpty) {
       return ExpansionTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text('Service'),
-            Text('0x${service.uuid.toString().toUpperCase()}',
+          children: const <Widget>[
+            Text('Wähle Spiel aus')
+            /*Text('0x${service.uuid.toString().toUpperCase()}',
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: Theme.of(context).textTheme.caption?.color))
+                    color: Theme.of(context).textTheme.caption?.color))*/
           ],
         ),
         children: characteristicTiles,
       );
     } else {
-      return ListTile(
+      return Row();
+        /*ListTile(
         title: const Text('Service'),
         subtitle:
             Text('0x${service.uuid.toString().toUpperCase()}'),
-      );
+      );*/
     }
   }
 }
@@ -186,9 +190,14 @@ class CharacteristicTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text('Characteristic'),
+                /*const Text('Characteristic'),
                 Text(
                     '0x${characteristic.uuid.toString().toUpperCase()}',
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Theme.of(context).textTheme.caption?.color))*/
+                const Text('Letztes Spiel'),
+                Text(
+                    'Benötigte Zeit: ',
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         color: Theme.of(context).textTheme.caption?.color))
               ],
@@ -199,7 +208,7 @@ class CharacteristicTile extends StatelessWidget {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              IconButton(
+              /*IconButton(
                 icon: Icon(
                   Icons.file_download,
                   color: Theme.of(context).iconTheme.color?.withOpacity(0.5),
@@ -218,8 +227,8 @@ class CharacteristicTile extends StatelessWidget {
                         : Icons.sync,
                     color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                 onPressed: onNotificationPressed,
-              ),
-              ElevatedButton(onPressed: onStartGamePressed, child: const Text('Start Game', style: TextStyle(color: Colors.white)))
+              ),*/
+              ElevatedButton(onPressed: onStartGamePressed, child: const Text('Start Rondo', style: TextStyle(color: Colors.white)))
             ],
           ),
           children: descriptorTiles,
