@@ -95,7 +95,7 @@ class ScanResultTile extends StatelessWidget {
         child: const Text('CONNECT'),
         style: ElevatedButton.styleFrom(
           primary: Colors.black,
-          onPrimary: Colors.white,
+          onPrimary: Colors.red,
         ),
         onPressed: (result.advertisementData.connectable) ? onTap : null,
       ),
@@ -136,7 +136,7 @@ class ServiceTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Text('Service'),
-            Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}',
+            Text('0x${service.uuid.toString().toUpperCase()}',
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
                     color: Theme.of(context).textTheme.caption?.color))
           ],
@@ -147,7 +147,7 @@ class ServiceTile extends StatelessWidget {
       return ListTile(
         title: const Text('Service'),
         subtitle:
-            Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}'),
+            Text('0x${service.uuid.toString().toUpperCase()}'),
       );
     }
   }
@@ -184,7 +184,7 @@ class CharacteristicTile extends StatelessWidget {
               children: <Widget>[
                 const Text('Characteristic'),
                 Text(
-                    '0x${characteristic.uuid.toString().toUpperCase().substring(4, 8)}',
+                    '0x${characteristic.uuid.toString().toUpperCase()}',
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         color: Theme.of(context).textTheme.caption?.color))
               ],
@@ -244,7 +244,7 @@ class DescriptorTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const Text('Descriptor'),
-          Text('0x${descriptor.uuid.toString().toUpperCase().substring(4, 8)}',
+          Text('0x${descriptor.uuid.toString().toUpperCase()}',
               style: Theme.of(context)
                   .textTheme
                   .bodyText1
