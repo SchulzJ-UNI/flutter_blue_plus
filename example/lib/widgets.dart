@@ -2,6 +2,8 @@
 // All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
@@ -95,7 +97,7 @@ class ScanResultTile extends StatelessWidget {
         child: const Text('CONNECT'),
         style: ElevatedButton.styleFrom(
           primary: Colors.black,
-          onPrimary: Colors.red,
+          onPrimary: Colors.white,
         ),
         onPressed: (result.advertisementData.connectable) ? onTap : null,
       ),
@@ -159,6 +161,7 @@ class CharacteristicTile extends StatelessWidget {
   final VoidCallback? onReadPressed;
   final VoidCallback? onWritePressed;
   final VoidCallback? onNotificationPressed;
+  final VoidCallback? onStartGamePressed;
 
   const CharacteristicTile(
       {Key? key,
@@ -166,7 +169,8 @@ class CharacteristicTile extends StatelessWidget {
       required this.descriptorTiles,
       this.onReadPressed,
       this.onWritePressed,
-      this.onNotificationPressed})
+      this.onNotificationPressed,
+      this.onStartGamePressed})
       : super(key: key);
 
   @override
@@ -189,7 +193,7 @@ class CharacteristicTile extends StatelessWidget {
                         color: Theme.of(context).textTheme.caption?.color))
               ],
             ),
-            subtitle: Text(value.toString()),
+            subtitle: Text(utf8.decode(value!)),
             contentPadding: const EdgeInsets.all(0.0),
           ),
           trailing: Row(
@@ -214,7 +218,8 @@ class CharacteristicTile extends StatelessWidget {
                         : Icons.sync,
                     color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                 onPressed: onNotificationPressed,
-              )
+              ),
+              ElevatedButton(onPressed: onStartGamePressed, child: const Text('Start Game', style: TextStyle(color: Colors.white)))
             ],
           ),
           children: descriptorTiles,

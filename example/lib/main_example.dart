@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -201,13 +202,23 @@ class DeviceScreen extends StatelessWidget {
                     characteristic: c,
                     onReadPressed: () => c.read(),
                     onWritePressed: () async {
-                      //await c.write(_getRandomBytes(), withoutResponse: true);
-                      await c.write([0x12]);
-                      await c.read();
+                     await c.write([0x12], withoutResponse: true);
+
+                      //await c.write([0x12]);
+                     var antwort = await c.read();
+                     print (utf8.decode(antwort));
                     },
                     onNotificationPressed: () async {
                       await c.setNotifyValue(!c.isNotifying);
                       await c.read();
+                    },
+                    onStartGamePressed:() async{
+                      await c.setNotifyValue(!c.isNotifying);
+                      await c.write([0x12], withoutResponse: true);
+
+                      //await c.write([0x12]);
+                      var antwort = await c.read();
+                      print (utf8.decode(antwort));
                     },
                     descriptorTiles: c.descriptors
                         .map(
