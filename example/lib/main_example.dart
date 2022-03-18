@@ -9,6 +9,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_blue_plus_example/GameInstance.dart';
 
 import 'widgets.dart';
 
@@ -200,21 +201,21 @@ class DeviceScreen extends StatelessWidget {
                 .map(
                   (c) => CharacteristicTile(
                     characteristic: c,
-                    onReadPressed: () => c.read(),
+                    /*onReadPressed: () => c.read(),
                     onWritePressed: () async {
                      await c.write([0x12], withoutResponse: true);
 
                       //await c.write([0x12]);
                      var antwort = await c.read();
-                    },
+                    },*/
                     onNotificationPressed: () async {
                       await c.setNotifyValue(!c.isNotifying);
-                      await c.read();
+                      //await c.read();
                     },
                     onStartGamePressed:() async{
-                      await c.setNotifyValue(!c.isNotifying);
+                      //await c.setNotifyValue(true);
                       await c.write([0x12], withoutResponse: true);
-
+                      var gI = GameInstance(c);
                       //await c.write([0x12]);
                       var antwort = await c.read();
                     },

@@ -199,10 +199,11 @@ class CharacteristicTile extends StatelessWidget {
                 Text(
                     'Benötigte Zeit: ',
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).textTheme.caption?.color))
+                        color: Theme.of(context).textTheme.caption?.color)),
+                Text("Pass 1: " + utf8.decode(value!) )
               ],
             ),
-            subtitle: Text(utf8.decode(value!)),
+            subtitle: Text(value.toString()),
             contentPadding: const EdgeInsets.all(0.0),
           ),
           trailing: Row(
@@ -219,7 +220,7 @@ class CharacteristicTile extends StatelessWidget {
                 icon: Icon(Icons.file_upload,
                     color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                 onPressed: onWritePressed,
-              ),
+              ),*/
               IconButton(
                 icon: Icon(
                     characteristic.isNotifying
@@ -227,7 +228,7 @@ class CharacteristicTile extends StatelessWidget {
                         : Icons.sync,
                     color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                 onPressed: onNotificationPressed,
-              ),*/
+              ),
               ElevatedButton(onPressed: onStartGamePressed, child: const Text('Start Rondo', style: TextStyle(color: Colors.white)))
             ],
           ),
