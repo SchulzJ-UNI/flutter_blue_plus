@@ -101,8 +101,8 @@ class ScanResultTile extends StatelessWidget {
           onPrimary: Colors.white,
         ),
         onPressed: (result.advertisementData.connectable && result.device.name == "GroundPasser") ? onTap : null,
-      ),/*
-      children: <Widget>[
+      ),
+      /*children: <Widget>[
         _buildAdvRow(
             context, 'Complete Local Name', result.advertisementData.localName),
         _buildAdvRow(context, 'Tx Power Level',
@@ -124,6 +124,7 @@ class ScanResultTile extends StatelessWidget {
 
 class ServiceTile extends StatelessWidget {
   final BluetoothService service;
+  
   final List<CharacteristicTile> characteristicTiles;
 
   const ServiceTile(
@@ -136,6 +137,24 @@ class ServiceTile extends StatelessWidget {
     if (characteristicTiles.isNotEmpty&& service.uuid.toString().toUpperCase() =="6E400001-B5A3-F393-E0A9-E50E24DCCA9E") {
       //if (characteristicTiles.isNotEmpty) {
       return ExpansionTile(
+        initiallyExpanded: true,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const <Widget>[
+            Text('Wähle Spiel aus')
+            /*Text('0x${service.uuid.toString().toUpperCase()}',
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: Theme.of(context).textTheme.caption?.color))*/
+          ],
+        ),
+        children: characteristicTiles,
+      );
+    }
+    if (characteristicTiles.isNotEmpty&& service.uuid.toString().toUpperCase() =="6E400002-B5A3-F393-E0A9-E50E24DCCA9E") {
+      //if (characteristicTiles.isNotEmpty) {
+      return ExpansionTile(
+        initiallyExpanded: true,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,30 +180,42 @@ class ServiceTile extends StatelessWidget {
 
 class CharacteristicTile extends StatelessWidget {
   final BluetoothCharacteristic characteristic;
-  final List<DescriptorTile> descriptorTiles;
+  //final List<DescriptorTile> descriptorTiles;
   final VoidCallback? onReadPressed;
   final VoidCallback? onWritePressed;
   final VoidCallback? onNotificationPressed;
   final VoidCallback? onStartGamePressed;
+  final VoidCallback? onStartGamePressed2;
 
   const CharacteristicTile(
       {Key? key,
       required this.characteristic,
-      required this.descriptorTiles,
+      //required this.descriptorTiles,
       this.onReadPressed,
       this.onWritePressed,
       this.onNotificationPressed,
-      this.onStartGamePressed})
+      this.onStartGamePressed,
+      this.onStartGamePressed2})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var text = "Kein gültiges Spiel erkannt";
+    var func= onStartGamePressed;
+    if(characteristic.uuid.toString().toUpperCase() =="6E400002-B5A3-F393-E0A9-E50E24DCCA9E"){
+      text = "Rondo";
+      func = onStartGamePressed;
+    }
+    if(characteristic.uuid.toString().toUpperCase() =="6E400003-B5A3-F393-E0A9-E50E24DCCA9E"){
+      text ="Spiel2";
+      func= onStartGamePressed2;
+    }
     return StreamBuilder<List<int>>(
       stream: characteristic.value,
       initialData: characteristic.lastValue,
       builder: (c, snapshot) {
         final value = snapshot.data;
-        return ExpansionTile(
+        return ListTile(
           title: ListTile(
             title: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +226,7 @@ class CharacteristicTile extends StatelessWidget {
                     '0x${characteristic.uuid.toString().toUpperCase()}',
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         color: Theme.of(context).textTheme.caption?.color))*/
-                const Text('Letztes Spiel'),
+                Text('Spiel "'+text+'"'),
                 Text(
                     'Benötigte Zeit: ',
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
@@ -229,10 +260,11 @@ class CharacteristicTile extends StatelessWidget {
                     color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                 onPressed: onNotificationPressed,
               ),
-              ElevatedButton(onPressed: onStartGamePressed, child: const Text('Start Rondo', style: TextStyle(color: Colors.white)))
+              ElevatedButton(onPressed: func,
+                  child: Text("Start "+text, style: const TextStyle(color: Colors.white)))
             ],
           ),
-          children: descriptorTiles,
+          //children: descriptorTiles,
         );
       },
     );
